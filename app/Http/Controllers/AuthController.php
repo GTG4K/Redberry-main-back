@@ -9,6 +9,7 @@ use Illuminate\Http\Request;
 use \Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Session;
 use Illuminate\Validation\ValidationException;
 
 class AuthController extends Controller
@@ -17,12 +18,8 @@ class AuthController extends Controller
     {
         $validated = $request->validated();
         $user = User::create($validated);
-        $token = $user->createToken('authToken')->plainTextToken;
 
-        return response()->json([
-            'user' => $user,
-            'token' => $token
-        ], 201);
+        return response()->json(['message' => 'Registration successful'], 201);
     }
 
     /**
@@ -33,24 +30,25 @@ class AuthController extends Controller
         $validated = $request->validated();
         $remember = $request->has('remember');
 
-        if (!Auth::attempt($validated, $remember)) {
+        $user = User::where('email', $validated['email'])->first();
+
+        if (!$user || !Hash::check($validated['password'], $user->password)) {
             return response()->json([
                 'email' => ['The provided credentials are incorrect.'],
             ]);
         }
 
-        $user = $request->user();
-        $token = $user->createToken('authToken')->plainTextToken;
+        Auth::login($user, $remember);
+        session()->regenerate();
 
-        return response()->json([
-            'user' => $user,
-            'token' => $token
-        ], 200);
+        return response()->json(['message'=>'logged in successfully']);
     }
 
     public function logout(): JsonResponse
     {
-        Auth::user()->currentAccessToken()->delete();
+        Auth::guard('web')->logout();
+        request()->session()->invalidate();
+        request()->session()->regenerateToken();
         return response()->json(['message' => 'Logout successful'], 200);
     }
 }
