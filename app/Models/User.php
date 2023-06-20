@@ -28,6 +28,9 @@ class User extends Authenticatable
     {
         $this->attributes['password'] = bcrypt($password);
     }
+    public function getProfilePictureAttribute($value){
+        return asset($value);
+    }
 
     /**
      * The attributes that should be hidden for serialization.
@@ -47,4 +50,12 @@ class User extends Authenticatable
     protected $casts = [
         'email_verified_at' => 'datetime',
     ];
+
+    public function movies(){
+        return $this->hasMany(Movie::class);
+    }
+
+    public function quotes(){
+        return $this->hasMany(Quote::class);
+    }
 }

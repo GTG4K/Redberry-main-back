@@ -17,7 +17,7 @@ class AuthController extends Controller
     public function register(RegisterRequest $request): JsonResponse
     {
         $validated = $request->validated();
-        $user = User::create([...$validated, 'profile_picture'=>asset('storage/img/pfp/rem.jpg')]);
+        $user = User::create([...$validated, 'profile_picture'=>'storage/img/pfp/rem.jpg']);
 
         return response()->json(['message' => 'Registration successful'], 201);
     }

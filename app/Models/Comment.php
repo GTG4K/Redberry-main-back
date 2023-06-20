@@ -4,24 +4,22 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
-class Movie extends Model
+class Comment extends Model
 {
     use HasFactory;
-
     protected $guarded = [
         'id',
     ];
 
-    public function user(){
+    public function user(): BelongsTo
+    {
         return $this->belongsTo(User::class);
     }
 
-    public function quotes(){
-        return $this->hasMany(Quote::class);
-    }
-
-    public function getPosterAttribute($value){
-        return asset($value);
+    public function quote(): BelongsTo
+    {
+        return $this->belongsTo(Quote::class);
     }
 }

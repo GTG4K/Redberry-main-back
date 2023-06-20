@@ -3,14 +3,17 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Resources\MovieResource;
 use App\Models\Movie;
 use Illuminate\Http\Request;
+use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
 
 class MovieController extends Controller
 {
-    function index(): string
+    function index(): AnonymousResourceCollection
     {
-        return Movie::all();
+        $movies = Movie::with('user')->get();
+        return MovieResource::collection($movies);
     }
 
     function show($id)
