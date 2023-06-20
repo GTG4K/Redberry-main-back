@@ -29,4 +29,8 @@ class Quote extends Model
     {
         return $this->hasMany(Comment::class);
     }
+
+    public function getImageAttribute($value){
+        return asset($value);
+    }
 }

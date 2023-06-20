@@ -11,7 +11,7 @@ class QuoteController extends Controller
 {
     function index(): AnonymousResourceCollection
     {
-        $quotes = Quote::with('user','movie','comments')->get();
+        $quotes = Quote::with('user','movie','comments')->orderBy('created_at', 'desc')->get();
         return QuoteResource::collection($quotes);
     }
 }

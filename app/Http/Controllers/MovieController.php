@@ -7,12 +7,13 @@ use App\Http\Resources\MovieResource;
 use App\Models\Movie;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
+use Illuminate\Support\Facades\Auth;
 
 class MovieController extends Controller
 {
     function index(): AnonymousResourceCollection
     {
-        $movies = Movie::with('user')->get();
+        $movies = Movie::with('user','quotes')->get();
         return MovieResource::collection($movies);
     }
 

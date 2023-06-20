@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\CommentController;
 use App\Http\Controllers\MovieController;
 use App\Http\Controllers\QuoteController;
 use App\Http\Controllers\UserController;
@@ -29,7 +30,9 @@ Route::middleware(['auth:sanctum'])->group(function () {
     Route::controller(QuoteController::class)->prefix('quotes')->group(function (){
         Route::get('/', 'index');
     });
-
+    Route::controller(CommentController::class)->prefix('comments')->group(function (){
+        Route::post('/', 'store');
+    });
     Route::get('/movies', [MovieController::class, 'index']);
     Route::get('/movies/{id}', [MovieController::class, 'show']);
     Route::post('/movies', [MovieController::class, 'store']);

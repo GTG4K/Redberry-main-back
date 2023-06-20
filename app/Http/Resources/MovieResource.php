@@ -2,6 +2,8 @@
 
 namespace App\Http\Resources;
 
+use App\Models\Comment;
+use App\Models\Quote;
 use Illuminate\Http\Resources\Json\JsonResource;
 
 class MovieResource extends JsonResource
@@ -18,10 +20,14 @@ class MovieResource extends JsonResource
             'id' => $this->id,
             'title' => $this->title,
             'poster' => $this->poster,
+            'slug' => $this->slug,
+            'description' => $this->description,
             'genre' => $this->genre,
             'release_date' => $this->release_date,
             'director' => $this->director,
             'created_at' => $this->created_at,
+            'user' => new UserResource($this->whenLoaded('user')),
+            'quotes' => QuoteResource::collection($this->whenLoaded('quotes')),
         ];
     }
 }
