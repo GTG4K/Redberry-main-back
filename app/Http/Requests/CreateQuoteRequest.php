@@ -4,7 +4,7 @@ namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class StoreCommentRequest extends FormRequest
+class CreateQuoteRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -24,10 +24,11 @@ class StoreCommentRequest extends FormRequest
     public function rules()
     {
         return [
-            'comment' => 'required',
-            'movie_id' => 'required|exists:movies,id',
-            'quote_id' => 'required|exists:quotes,id',
+            'quote_en' => 'required',
+            'quote_ka' => 'required',
+            'image' => 'required|image',
             'user_id' => 'required|exists:users,id',
+            'movie_id' => 'required|exists:movies,id',
         ];
     }
 }

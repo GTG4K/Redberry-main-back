@@ -18,7 +18,7 @@ class UserFactory extends Factory
             'name' => 'tarkhna',
             'email' => 'tarkhna@gmail.com',
             'email_verified_at' => now(),
-            'profile_picture' => 'storage/img/pfp/rem.jpg',
+            'profile_picture' => 'img/pfp/rem.jpg',
             'password' => 'password', // password
             'remember_token' => Str::random(10),
         ];

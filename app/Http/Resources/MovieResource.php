@@ -18,13 +18,13 @@ class MovieResource extends JsonResource
     {
         return [
             'id' => $this->id,
-            'title' => $this->title,
+            'title' => $this->getTranslations('title'),
             'poster' => $this->poster,
             'slug' => $this->slug,
-            'description' => $this->description,
+            'description' => $this->getTranslations('description'),
             'genre' => $this->genre,
             'release_date' => $this->release_date,
-            'director' => $this->director,
+            'director' => $this->getTranslations('director'),
             'created_at' => $this->created_at,
             'user' => new UserResource($this->whenLoaded('user')),
             'quotes' => QuoteResource::collection($this->whenLoaded('quotes')),

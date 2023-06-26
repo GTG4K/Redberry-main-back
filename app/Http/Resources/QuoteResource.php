@@ -17,11 +17,13 @@ class QuoteResource extends JsonResource
     {
         return [
             'id' => $this->id,
-            'quote' => $this->quote,
+            'quote' => $this->getTranslations('quote'),
             'image' => $this->image,
             'user' => new UserResource($this->whenLoaded('user')),
             'movie' => new MovieResource($this->whenLoaded('movie')),
-            'comments' => CommentResource::collection($this->comments)
+            'likedByAuthUser' => $this->likedByAuthUser(),
+            'comments' => CommentResource::collection($this->comments),
+            'likes' => LikeResource::collection($this->likes),
         ];
     }
 }

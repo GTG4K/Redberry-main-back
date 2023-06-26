@@ -11,6 +11,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Validation\ValidationException;
+use App\Notifications\VerifyEmail;
 
 class AuthController extends Controller
 {
@@ -18,6 +19,7 @@ class AuthController extends Controller
     {
         $validated = $request->validated();
         $user = User::create([...$validated, 'profile_picture'=>'storage/img/pfp/rem.jpg']);
+        $user->sendEmailVerificationNotification();
 
         return response()->json(['message' => 'Registration successful'], 201);
     }
