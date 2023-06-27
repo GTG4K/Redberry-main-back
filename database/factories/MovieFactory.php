@@ -15,8 +15,9 @@ class MovieFactory extends Factory
     public function definition()
     {
         return [
+            'user_id' => 1,
             'title' => $this->faker->sentence(),
-            'poster' => 'movie_poster',
+            'poster' => 'storage/img/movie/your_name.jpeg',
             'genre' => $this->faker->slug(),
             'release_date' => random_int(1990, 2023),
             'director' => $this->faker->name(),
