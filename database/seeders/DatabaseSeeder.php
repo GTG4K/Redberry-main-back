@@ -5,6 +5,7 @@ namespace Database\Seeders;
 use App\Models\Comment;
 use App\Models\Like;
 use App\Models\Movie;
+use App\Models\Notification;
 use App\Models\Quote;
 use App\Models\User;
 use Illuminate\Database\Seeder;
@@ -20,7 +21,7 @@ class DatabaseSeeder extends Seeder
     public function run()
     {
         User::factory(1)->create();
-        user::create([
+        User::create([
             'name' => 'standing cat',
             'email' => 'cat@gmail.com',
             'email_verified_at' => now(),
@@ -117,9 +118,23 @@ class DatabaseSeeder extends Seeder
                 'user_id' => 1,
                 'quote_id' => $i,
             ]);
+            Notification::create([
+                'user_id' => 2,
+                'sender_id' => 1,
+                'notification_type' => 'like',
+                'quote_id' => $i,
+                'message' => 'Reacted to your quote',
+            ]);
             Like::create([
                 'user_id' => 2,
                 'quote_id' => $i,
+            ]);
+            Notification::create([
+                'user_id' => 1,
+                'sender_id' => 2,
+                'notification_type' => 'like',
+                'quote_id' => $i,
+                'message' => 'Reacted to your quote',
             ]);
         }
     }
