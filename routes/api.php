@@ -44,6 +44,7 @@ Route::middleware(['auth:sanctum'])->group(function () {
 
     Route::controller(UserController::class)->prefix('user')->group(function () {
         Route::get('/', 'user');
+        Route::post('/message', 'sendMessage');
         Route::post('/{id}', 'update');
     });
     Route::controller(QuoteController::class)->prefix('quotes')->group(function () {

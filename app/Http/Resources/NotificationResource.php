@@ -21,7 +21,7 @@ class NotificationResource extends JsonResource
             'is_read' => $this->is_read,
             'created_at' => $this->created_at,
             'quote' => $this->quote,
-            'sender' => new UserResource($this->whenLoaded('sender')),
+            'sender' => new UserResource($this->sender),
         ];
     }
 }

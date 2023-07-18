@@ -41,14 +41,14 @@ class AuthController extends Controller
 
         if (!$user || !Hash::check($validated['password'], $user->password)) {
             return response()->json([
-                'email' => ['The provided credentials are incorrect.'],
-            ]);
+                'message' => 'The provided credentials are incorrect.',
+            ],403);
         }
 
         Auth::login($user, $remember);
         session()->regenerate();
 
-        return response()->json(['message' => 'logged in successfully']);
+        return response()->json(['message' => 'logged in successfully'],201);
     }
 
     public function logout(): JsonResponse

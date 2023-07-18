@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Events\MessageSent;
+use App\Http\Requests\UserUpdateRequest;
+use App\Http\Requests\VerifyEmailChangesRequest;
 use App\Http\Resources\UserResource;
 use App\Mail\verifyEmailChangeRequest;
 use App\Models\User;
@@ -17,13 +19,10 @@ class UserController extends Controller
         return $request->user();
     }
 
-    public function update($id, Request $request)
+    public function update($id, UserUpdateRequest $request)
     {
         $user = User::find($id);
-        $request->validate([
-            'password' => 'confirmed|min:8',
-            'email' => 'email',
-        ]);
+        $request->validated();
 
         if ($request['name']) {
             $user->name = $request['name'];
@@ -48,9 +47,10 @@ class UserController extends Controller
         return response()->json(['message' => 'user changed success'], 202);
     }
 
-    public function verifyEmailChange($id, Request $request)
+    public function verifyEmailChange($id, VerifyEmailChangesRequest $request)
     {
         $user = User::find($id);
+        $request->validated();
 
         if ($request['email']) {
             $user->email = $request['email'];
@@ -59,13 +59,5 @@ class UserController extends Controller
         $user->save();
 
         return Redirect::to(env('FRONTEND_URL'));
-    }
-
-    public function sendMessage(Request $request){
-        $textmessage = $request->validate([
-            'text' => 'string'
-        ]);
-
-        event(new MessageSent($textmessage));
     }
 }

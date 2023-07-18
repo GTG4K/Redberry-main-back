@@ -13,6 +13,6 @@ use Illuminate\Support\Facades\Broadcast;
 |
 */
 
-Broadcast::channel('update-comment', function () {
-    return true;
+Broadcast::channel('notifications', function ($userId) {
+    return auth()->user()->id == $userId;
 });

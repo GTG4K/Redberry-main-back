@@ -2,6 +2,7 @@
 
 namespace App\Events;
 
+use App\Http\Resources\CommentResource;
 use Illuminate\Broadcasting\Channel;
 use Illuminate\Broadcasting\InteractsWithSockets;
 use Illuminate\Broadcasting\PresenceChannel;
@@ -10,20 +11,24 @@ use Illuminate\Contracts\Broadcasting\ShouldBroadcast;
 use Illuminate\Foundation\Events\Dispatchable;
 use Illuminate\Queue\SerializesModels;
 
-class MessageSent implements ShouldBroadcast
+class AddCommentEvent implements ShouldBroadcast
 {
     use Dispatchable, InteractsWithSockets, SerializesModels;
 
-    public $message;
+    public CommentResource $comment;
+    public int $quoteId;
+    public int $movieId;
 
     /**
      * Create a new event instance.
      *
      * @return void
      */
-    public function __construct($message)
+    public function __construct($comment, $quoteId, $movieId)
     {
-        $this->message = $message;
+        $this->comment = new CommentResource($comment);
+        $this->quoteId = $quoteId;
+        $this->movieId = $movieId;
     }
 
     /**
@@ -33,6 +38,6 @@ class MessageSent implements ShouldBroadcast
      */
     public function broadcastOn()
     {
-        return new Channel('messages');
+        return new Channel('comments');
     }
 }
