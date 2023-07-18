@@ -104,7 +104,7 @@ php artisan serve
 ```
 
 ### DrawSQL
-https://drawsql.app/teams/tarkhna/diagrams/corona-time
+https://drawsql.app/teams/tarkhna/diagrams/movie-quotes-upgraded
 <div style="display:flex; align-items: center">
-  <img src="https://i.ibb.co/qdWJnRg/image.png" alt="drawing" />
+  <img src="https://i.ibb.co/W2pkkkN/Screenshot-from-2023-07-19-01-41-21.png" alt="drawing" />
 </div>
