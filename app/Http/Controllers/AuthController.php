@@ -2,48 +2,55 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\LoginRequest;
+use App\Http\Requests\RegisterRequest;
 use App\Models\User;
 use Illuminate\Http\Request;
 use \Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Session;
+use Illuminate\Validation\ValidationException;
+use App\Notifications\VerifyEmail;
 
 class AuthController extends Controller
 {
-    public function register(Request $request): JsonResponse
+    public function register(RegisterRequest $request): JsonResponse
     {
-        $request->validate([
-            'name' => 'required|string|max:255',
-            'email' => 'required|string|email|unique:users|max:255',
-            'password' => 'required|string|min:8',
-        ]);
+        $validated = $request->validated();
+        $user = User::create([...$validated, 'profile_picture'=>'storage/img/pfp/rem.jpg']);
+        $user->sendEmailVerificationNotification();
 
-        $user = User::create([
-            'name' => $request->name,
-            'email' => $request->email,
-            'password' => bcrypt($request->password),
-        ]);
-
-        $token = $user->createToken('authToken')->plainTextToken;
-
-        return response()->json(['token' => $token], 201);
+        return response()->json(['message' => 'Registration successful'], 201);
     }
 
-    public function login(Request $request): JsonResponse
+    /**
+     * @throws ValidationException
+     */
+    public function login(LoginRequest $request): JsonResponse
     {
-        $request->validate([
-            'email' => 'required|string|email',
-            'password' => 'required|string',
-        ]);
+        $validated = $request->validated();
+        $remember = $request->has('remember');
 
-        if (!Auth::attempt($request->only('email', 'password'))) {
-            throw ValidationException::withMessages([
+        $user = User::where('email', $validated['email'])->first();
+
+        if (!$user || !Hash::check($validated['password'], $user->password)) {
+            return response()->json([
                 'email' => ['The provided credentials are incorrect.'],
             ]);
         }
 
-        $user = $request->user();
-        $token = $user->createToken('authToken')->plainTextToken;
+        Auth::login($user, $remember);
+        session()->regenerate();
 
-        return response()->json(['token' => $token], 200);
+        return response()->json(['message'=>'logged in successfully']);
+    }
+
+    public function logout(): JsonResponse
+    {
+        Auth::guard('web')->logout();
+        request()->session()->invalidate();
+        request()->session()->regenerateToken();
+        return response()->json(['message' => 'Logout successful'], 200);
     }
 }

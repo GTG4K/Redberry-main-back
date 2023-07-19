@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateMoviesTable extends Migration
+class CreateNotificationsTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,17 +13,14 @@ class CreateMoviesTable extends Migration
      */
     public function up()
     {
-        Schema::create('movies', function (Blueprint $table) {
+        Schema::create('notifications', function (Blueprint $table) {
             $table->id();
-            $table->longText('title');
-            $table->string('slug')->unique();
-            $table->string('poster');
-            $table->string('genre');
-            $table->longText('description');
-            $table->integer('release_date');
-            $table->string('director');
-
+            $table->enum('notification_type', ['like', 'comment']);
+            $table->text('message')->nullable();
+            $table->boolean('is_read')->default(0);
+            $table->foreignId('quote_id')->constrained('quotes')->cascadeOnDelete();
             $table->foreignId('user_id')->constrained('users')->cascadeOnDelete();
+            $table->foreignId('sender_id')->constrained('users')->cascadeOnDelete();
             $table->timestamps();
         });
     }
@@ -35,6 +32,6 @@ class CreateMoviesTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('movies');
+        Schema::dropIfExists('notifications');
     }
 }
