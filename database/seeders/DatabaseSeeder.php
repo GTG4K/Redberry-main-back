@@ -113,29 +113,29 @@ class DatabaseSeeder extends Seeder
             ]
         ]);
         Comment::factory(10)->create();
-        for ($i = 1; $i <= 5; $i++) {
-            Like::create([
-                'user_id' => 1,
-                'quote_id' => $i,
-            ]);
-            Notification::create([
-                'user_id' => 2,
-                'sender_id' => 1,
-                'notification_type' => 'like',
-                'quote_id' => $i,
-                'message' => 'Reacted to your quote',
-            ]);
-            Like::create([
-                'user_id' => 2,
-                'quote_id' => $i,
-            ]);
-            Notification::create([
-                'user_id' => 1,
-                'sender_id' => 2,
-                'notification_type' => 'like',
-                'quote_id' => $i,
-                'message' => 'Reacted to your quote',
-            ]);
-        }
+//        for ($i = 1; $i <= 5; $i++) {
+//            Like::create([
+//                'user_id' => 1,
+//                'quote_id' => $i,
+//            ]);
+//            Notification::create([
+//                'user_id' => 2,
+//                'sender_id' => 1,
+//                'notification_type' => 'like',
+//                'quote_id' => $i,
+//                'message' => 'Reacted to your quote',
+//            ]);
+//            Like::create([
+//                'user_id' => 2,
+//                'quote_id' => $i,
+//            ]);
+//            Notification::create([
+//                'user_id' => 1,
+//                'sender_id' => 2,
+//                'notification_type' => 'like',
+//                'quote_id' => $i,
+//                'message' => 'Reacted to your quote',
+//            ]);
+//        }
     }
 }

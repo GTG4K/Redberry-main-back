@@ -25,6 +25,8 @@ class User extends Authenticatable implements MustVerifyEmail
         'email',
         'password',
         'profile_picture',
+        'google_id',
+        'google_token',
     ];
 
     public function sendEmailVerificationNotification()
@@ -39,7 +41,11 @@ class User extends Authenticatable implements MustVerifyEmail
 
     public function getProfilePictureAttribute($value)
     {
-        return asset('storage/' . $value);
+        if ($this->google_id) {
+            return $value;
+        } else {
+            return asset('storage/' . $value);
+        }
     }
 
     /**
@@ -75,10 +81,12 @@ class User extends Authenticatable implements MustVerifyEmail
     {
         return $this->hasMany(Notification::class, 'user_id');
     }
+
     public function notificationsSent()
     {
         return $this->hasMany(Notification::class, 'sender_id');
     }
+
     public function likes()
     {
         return $this->hasMany(Like::class);

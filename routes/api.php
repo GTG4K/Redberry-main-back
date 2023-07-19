@@ -6,6 +6,7 @@ use App\Http\Controllers\LanguageController;
 use App\Http\Controllers\LikeController;
 use App\Http\Controllers\MovieController;
 use App\Http\Controllers\NotificationController;
+use App\Http\Controllers\ProviderController;
 use App\Http\Controllers\QuoteController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\VerificationController;
@@ -32,11 +33,20 @@ Route::controller(LanguageController::class)->prefix('language')->group(function
 });
 
 Route::get('/email/verify/{id}/{hash}', [VerificationController::class, 'verify'])->name('verification.verify');
+Route::get('/user/{id}/verify_email_change', [UserController::class, 'verifyEmailChange']);
+Route::post('/forgot_password', [AuthController::class, 'forgotPassword']);
+Route::get('/recover_password', [AuthController::class, 'recoverPassword']);
+Route::post('/reset_password', [AuthController::class, 'resetPassword']);
 
 // protected api
 Route::middleware(['auth:sanctum'])->group(function () {
-    Route::get('/user', [UserController::class, 'user']);
     Route::post('/logout', [AuthController::class, 'logout']);
+
+    Route::controller(UserController::class)->prefix('user')->group(function () {
+        Route::get('/', 'user');
+        Route::post('/message', 'sendMessage');
+        Route::post('/{id}', 'update');
+    });
     Route::controller(QuoteController::class)->prefix('quotes')->group(function () {
         Route::get('/', 'index');
         Route::get('/{id}', 'show');
